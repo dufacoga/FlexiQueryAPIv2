@@ -1,25 +1,57 @@
-const { buildSchema } = require('graphql');
+const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList, GraphQLNonNull } = require('graphql');
+const { GraphQLJSON } = require('graphql-type-json');
 
-const schema = buildSchema(`
-  type Query {
-    select(table: String!, columns: [String!], where: String): [Result]
+const QueryType = new GraphQLObjectType({
+  name: 'Query',
+  fields: {
+    select: {
+      type: new GraphQLList(GraphQLJSON),
+      args: {
+        table: { type: new GraphQLNonNull(GraphQLString) },
+        columns: { type: new GraphQLList(GraphQLString) },
+        where: { type: GraphQLJSON }
+      },
+      resolve: (_, args) =>
+        require('../../application/usecases/executeSelect')(args)
+    }
   }
+});
 
-  type Mutation {
-    insert(table: String!, values: JSONInput!): Int
-    update(table: String!, values: JSONInput!, where: String!): Int
-    delete(table: String!, where: String!): Int
+const MutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    insert: {
+      type: GraphQLInt,
+      args: {
+        table: { type: new GraphQLNonNull(GraphQLString) },
+        values: { type: new GraphQLNonNull(GraphQLJSON) }
+      },
+      resolve: (_, args) =>
+        require('../../application/usecases/executeInsert')(args)
+    },
+    update: {
+      type: GraphQLInt,
+      args: {
+        table: { type: new GraphQLNonNull(GraphQLString) },
+        values: { type: new GraphQLNonNull(GraphQLJSON) },
+        where: { type: new GraphQLNonNull(GraphQLJSON) }
+      },
+      resolve: (_, args) =>
+        require('../../application/usecases/executeUpdate')(args)
+    },
+    delete: {
+      type: GraphQLInt,
+      args: {
+        table: { type: new GraphQLNonNull(GraphQLString) },
+        where: { type: new GraphQLNonNull(GraphQLJSON) }
+      },
+      resolve: (_, args) =>
+        require('../../application/usecases/executeDelete')(args)
+    }
   }
+});
 
-  type Result {
-    key: String
-    value: String
-  }
-
-  input JSONInput {
-    key: String
-    value: String
-  }
-`);
-
-module.exports = schema;
+module.exports = new GraphQLSchema({
+  query: QueryType,
+  mutation: MutationType
+});
