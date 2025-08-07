@@ -12,7 +12,7 @@ const QueryType = new GraphQLObjectType({
         where: { type: GraphQLJSON }
       },
       resolve: (_, args) =>
-        require('../../application/usecases/executeSelect')(args)
+        require('../../application/usecases/ExecuteSelect')(args)
     }
   }
 });
@@ -27,7 +27,7 @@ const MutationType = new GraphQLObjectType({
         values: { type: new GraphQLNonNull(GraphQLJSON) }
       },
       resolve: (_, args) =>
-        require('../../application/usecases/executeInsert')(args)
+        require('../../application/usecases/ExecuteInsert')(args)
     },
     update: {
       type: GraphQLInt,
@@ -37,7 +37,7 @@ const MutationType = new GraphQLObjectType({
         where: { type: new GraphQLNonNull(GraphQLJSON) }
       },
       resolve: (_, args) =>
-        require('../../application/usecases/executeUpdate')(args)
+        require('../../application/usecases/ExecuteUpdate')(args)
     },
     delete: {
       type: GraphQLInt,
@@ -46,7 +46,7 @@ const MutationType = new GraphQLObjectType({
         where: { type: new GraphQLNonNull(GraphQLJSON) }
       },
       resolve: (_, args) =>
-        require('../../application/usecases/executeDelete')(args)
+        require('../../application/usecases/ExecuteDelete')(args)
     }
   }
 });

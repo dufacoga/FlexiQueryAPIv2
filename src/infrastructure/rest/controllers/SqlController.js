@@ -1,7 +1,7 @@
-const executeInsert = require('../../../application/usecases/executeInsert');
-const executeUpdate = require('../../../application/usecases/executeUpdate');
-const executeDelete = require('../../../application/usecases/executeDelete');
-const executeSelect = require('../../../application/usecases/executeSelect');
+const executeInsert = require('../../../application/usecases/ExecuteInsert');
+const executeUpdate = require('../../../application/usecases/ExecuteUpdate');
+const executeDelete = require('../../../application/usecases/ExecuteDelete');
+const executeSelect = require('../../../application/usecases/ExecuteSelect');
 
 const insert = async (req, res) => {
   try {
