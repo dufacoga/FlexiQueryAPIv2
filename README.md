@@ -86,7 +86,7 @@ src/
 ```json
 {
   "table": "Users",
-  "columns": ["Id", "Name", "Username"],
+  "columns": ["id", "firstName", "email"],
   "where": {
     "RoleId": 2
   }
