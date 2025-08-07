@@ -32,6 +32,7 @@ logs/
 Thumbs.db
 
 # Swagger generated files (optional)
+*.json
 swagger-output.json
 swagger.json
 
