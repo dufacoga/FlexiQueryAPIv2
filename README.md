@@ -112,6 +112,16 @@ Visit:
 
 ---
 
+## 🧃 Sample Data
+
+The included `example.db` SQLite file provides:
+
+- 👤 200 Users
+- 🛒 50 Shopping carts
+- 🛍️ Products linked by foreign keys
+
+---
+
 ## 📄 License
 
 [MIT License](LICENSE)
