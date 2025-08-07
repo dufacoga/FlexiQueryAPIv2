@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: npm install
+      - name: Install dependencies
         run: npm install
 
-      - name: Inject environment variables and test build
-        run: npm start
+      - name: Run app with env for test (optional)
+        run: node src/index.js
         env:
           API_KEY: ${{ secrets.API_KEY }}
           PORT: ${{ secrets.PORT }}
@@ -45,7 +45,7 @@ jobs:
           DB_SQLSERVER_ENCRYPT: ${{ secrets.DB_SQLSERVER_ENCRYPT }}
           SQLITE_PATH: ${{ secrets.SQLITE_PATH }}
 
-      - name: Upload artifact for deployment job
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: node-app
