@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const sqlController = require('../controllers/sqlController');
+const sqlController = require('../controllers/SqlController');
 
 router.post('/insert', sqlController.insert);
 router.put('/update', sqlController.update);
