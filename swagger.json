@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FlexiQueryAPIv2",
+    "version": "1.0.0",
+    "description": "REST API to safely execute dynamic SQL queries (CRUD) across MySQL, SQLite, and SQL Server with API key authentication."
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY"
+      }
+    },
+    "schemas": {
+      "Insert": {
+        "type": "object",
+        "properties": {
+          "table": { "type": "string" },
+          "values": {
+            "type": "object",
+            "example": { "name": "John", "age": 30 }
+          }
+        },
+        "required": ["table", "values"]
+      },
+      "Update": {
+        "type": "object",
+        "properties": {
+          "table": { "type": "string" },
+          "values": {
+            "type": "object",
+            "example": { "name": "John Doe" }
+          },
+          "where": {
+            "type": "object",
+            "example": { "id": 1 }
+          }
+        },
+        "required": ["table", "values", "where"]
+      },
+      "Delete": {
+        "type": "object",
+        "properties": {
+          "table": { "type": "string" },
+          "where": {
+            "type": "object",
+            "example": { "id": 1 }
+          }
+        },
+        "required": ["table", "where"]
+      },
+      "Select": {
+        "type": "object",
+        "properties": {
+          "table": { "type": "string" },
+          "columns": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["id", "name"]
+          },
+          "where": {
+            "type": "object",
+            "example": { "status": "active" }
+          }
+        },
+        "required": ["table"]
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "paths": {
+    "/api/sql/insert": {
+      "post": {
+        "summary": "Insert record",
+        "description": "Insert a new record into a table.",
+        "tags": ["SQL"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Insert DTO",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Insert"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Insert success" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/sql/update": {
+      "put": {
+        "summary": "Update record",
+        "description": "Update an existing record.",
+        "tags": ["SQL"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Update DTO",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Update success" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/sql/delete": {
+      "delete": {
+        "summary": "Delete record",
+        "description": "Delete a record.",
+        "tags": ["SQL"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Delete DTO",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Delete"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Delete success" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+    "/api/sql/select": {
+      "post": {
+        "summary": "Select records",
+        "description": "Run a SELECT query and return results.",
+        "tags": ["SQL"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Select DTO",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Select"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Query results" },
+          "500": { "description": "Server error" }
+        }
+      }
+    }
+  }
+}
