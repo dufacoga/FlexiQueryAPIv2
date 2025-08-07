@@ -16,9 +16,10 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js version
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
@@ -26,24 +27,24 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run app with env for test (optional)
-        run: node src/index.js
+      - name: Syntax check (no run)
+        run: node --check src/index.js
         env:
           API_KEY: ${{ secrets.API_KEY }}
-          PORT: ${{ secrets.PORT }}
           DB_TYPE: ${{ secrets.DB_TYPE }}
+          PORT: ${{ secrets.PORT }}
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_PORT: ${{ secrets.DB_PORT }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
+          SQLITE_PATH: ${{ secrets.SQLITE_PATH }}
           DB_SERVER: ${{ secrets.DB_SERVER }}
+          DB_SQLSERVER_PORT: ${{ secrets.DB_SQLSERVER_PORT }}
           DB_SQLSERVER_USER: ${{ secrets.DB_SQLSERVER_USER }}
           DB_SQLSERVER_PASSWORD: ${{ secrets.DB_SQLSERVER_PASSWORD }}
           DB_SQLSERVER_NAME: ${{ secrets.DB_SQLSERVER_NAME }}
-          DB_SQLSERVER_PORT: ${{ secrets.DB_SQLSERVER_PORT }}
           DB_SQLSERVER_ENCRYPT: ${{ secrets.DB_SQLSERVER_ENCRYPT }}
-          SQLITE_PATH: ${{ secrets.SQLITE_PATH }}
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
@@ -72,6 +73,7 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_5F46AF6EB8044416BAEC6217645DD3E2 }}
 
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'flexiqueryapiv2'
