@@ -88,7 +88,7 @@ src/
   "table": "Users",
   "columns": ["id", "firstName", "email"],
   "where": {
-    "RoleId": 2
+    "age": 30
   }
 }
 ```
